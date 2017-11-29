@@ -51,14 +51,14 @@
                 }
             ];
 
-            this.setState({tasks: tasks, addingTask: false});
+            this.setState({tasks: tasks, addingTask: undefined});
         },
         randomColor(min, max){
           var found = true;
           var usedColors = this.state.tasks.map((task) => task.color);
           var randomNum = '';
 
-          for (var i = min; i <= max; i++){
+          for (var i = min; i <= max+1; i++){
             randomNum = (min + Math.ceil(Math.random() * (max-min)));
             if (usedColors.indexOf(randomNum) < 0){
               break;
@@ -113,7 +113,7 @@
           this.setState({addingTask: true});
         },
         hideAddTaskModal(){
-          this.setState({addingTask: false});
+          this.setState({addingTask: undefined});
         },
 
         //Remove Task Modal handlers
