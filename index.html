@@ -19,9 +19,7 @@
             return {
                 tasks: [],
                 days: defaultDays,
-                work: [],
-                addingTask: false,
-                dayToAddTo: ''
+                work: []
             }
         },
         nextId() {
@@ -33,16 +31,42 @@
             return this.uniqueWorkId++
         },
         addTask(inpName, inpHours) {
+            var taskNameExists = this.state.tasks.filter((task) => task.name == inpName);
+
+            var color = '';
+            if (taskNameExists.length > 0){
+              color = taskNameExists[0].color;
+            }
+            else{
+              color = this.randomColor(0,7);
+            }
+
             var tasks = [
                 ...this.state.tasks,
                 {
                     id: this.nextId(),
                     name: inpName,
-                    totalHours: inpHours
+                    totalHours: inpHours,
+                    color: color
                 }
             ];
 
             this.setState({tasks: tasks, addingTask: false});
+        },
+        randomColor(min, max){
+          var found = true;
+          var usedColors = this.state.tasks.map((task) => task.color);
+          var randomNum = '';
+
+          for (var i = min; i <= max; i++){
+            randomNum = (min + Math.ceil(Math.random() * (max-min)));
+            if (usedColors.indexOf(randomNum) < 0){
+              break;
+            }
+          }
+
+          // assign num to actual color here
+          return randomNum;
         },
         updateTask(taskId, inpName, inpHours){
             var tasks = this.state.tasks.map(
@@ -57,14 +81,15 @@
 
               this.setState({tasks: tasks, taskToUpdate: undefined});
         },
-        addWork(taskId, dayId, inpHours) {
+        addWork(taskId, dayId, inpHours, desc) {
             var work = [
                   ...this.state.work,
                   {
                     id: this.nextWorkId(),
                     taskId: parseInt(taskId),
                     dayId: dayId,
-                    hours: parseInt(inpHours)
+                    hours: parseInt(inpHours),
+                    desc: desc
                   }
             ];
 
@@ -193,25 +218,30 @@
     })
 
     var AddWorkModal = React.createClass({
+      handleChangeTask(e){
+          this.setState({selectedTask: e.target.value});
+      },
       handleChangeHours(e){
           this.setState({inpHours: e.target.value});
       },
-      handleChangeTask(e){
-          this.setState({selectedTask: e.target.value});
+      handleChangeDesc(e){
+          this.setState({inpDesc: e.target.value});
       },
       optionTasks(task){
           return (<option key={task.id} value={task.id}>{task.name}</option>)
       },
       addWork(){
-          this.props.clickFunction(this.state.selectedTask, this.props.day, this.state.inpHours);
+          this.props.clickFunction(this.state.selectedTask, this.props.day, this.state.inpHours, this.state.inpDesc);
       },
       render(){
         return (<div id="AddWorkModal">
                   <select onChange={this.handleChangeTask}>
                     <option>Choose a task</option>
                     {this.props.tasks.map(this.optionTasks)}
-                  </select><br/>
+                  </select>
+                  <br/>
                   <input type="text"  onChange={ this.handleChangeHours } placeholder="Hours"></input>
+                  <input type="text"  onChange={ this.handleChangeDesc } placeholder="Description"></input>
                   <button onClick={() => this.addWork()}>add</button><button onClick={() => this.props.hideModalFunction()}>cancel</button>
                 </div>)
       }
@@ -230,6 +260,7 @@
                           name={task.name}
                           totalHours={task.totalHours}
                           remHours={task.totalHours - usedHours}
+                          color={task.color}
                           showRemoveModalFunction={this.props.showRemoveModalFunction}
                           showUpdateModalFunction={this.props.showUpdateModalFunction}>
             </Task>)
@@ -247,7 +278,7 @@
 
     var Task = React.createClass({
         render() {
-            return (<li>{this.props.name} | total:{this.props.totalHours} | rem:{this.props.remHours}
+            return (<li>{this.props.name} | total:{this.props.totalHours} | rem:{this.props.remHours} | color: {this.props.color}
                 <button onClick={() => this.props.showUpdateModalFunction({id: this.props.id, name: this.props.name, hours: this.props.totalHours})}>update</button>
                 <button onClick={() => this.props.showRemoveModalFunction({id: this.props.id, name: this.props.name, hours: this.props.totalHours})}>-</button></li>)
         }
@@ -300,7 +331,7 @@
             }
         },
         printWork(work){
-          return (<li key={work.id}><p>id: {work.id} | hours: {work.hours}</p>
+          return (<li key={work.id}><p>id: {work.id} | hours: {work.hours} | desc: {work.desc}</p>
               <button onClick={() => this.props.removeFunction(work.id)}>-</button></li>)
         },
         render() {
