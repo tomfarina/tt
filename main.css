@@ -1,0 +1,107 @@
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul {
+  margin: 0;
+  padding: 0; }
+
+button {
+  border: none;
+  border-radius: 3px;
+  padding: 10px 30px; }
+  button:hover {
+    cursor: pointer; }
+
+input {
+  border: none;
+  border-radius: 3px;
+  padding: 10px 15px;
+  margin: 0 30px 0 10px; }
+
+body {
+  background: #dfe3e6;
+  font-family: 'Helvetica', sans-serif;
+  font-size: 18px; }
+
+#app > div {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 15px; }
+
+.taskContainer {
+  background: #0d404e;
+  color: #ffffff;
+  grid-column: 1/6;
+  grid-row: 1;
+  padding: 20px; }
+  .taskContainer button {
+    background: #ff5a3c;
+    color: #ffffff;
+    margin-right: 15px; }
+    .taskContainer button:hover {
+      background: #ff4423; }
+  .taskContainer #modal {
+    display: inline-block;
+    text-align: center; }
+    .taskContainer #modal button {
+      background: #00da9d;
+      color: #ffffff; }
+      .taskContainer #modal button:hover {
+        background: #00a778; }
+
+.taskContainer > p {
+  background: #14647a;
+  border-radius: 3px;
+  display: inline-block;
+  margin-right: 15px;
+  padding: 15px 0 15px 25px; }
+  .taskContainer > p button {
+    background: #0d404e;
+    margin: 0 10px; }
+    .taskContainer > p button:hover {
+      background: #00da9d; }
+
+#selTaskModal {
+  background: #0d404e;
+  height: 40vh;
+  width: 40vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  box-shadow: 0px 7px 29px 0px #4a484a; }
+
+#weekList {
+  grid-column: 1/6;
+  grid-row: 2; }
+  #weekList ul {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 15px;
+    margin: 0 15px; }
+    #weekList ul li {
+      background: #ff5a3c;
+      border: 1px solid #ff4423;
+      border-radius: 3px;
+      color: #ffffff;
+      display: inline-block;
+      padding: 15px;
+      box-shadow: 0px 4px 2px -2px #c2c2c2; }
+      #weekList ul li h4 {
+        display: inline-block;
+        font-weight: 100; }
+      #weekList ul li button {
+        background: #ff2f09;
+        color: #ffffff;
+        float: right;
+        padding: 10px 20px; }
+        #weekList ul li button:hover {
+          background: #ef2500; }
+
+/*# sourceMappingURL=main.css.map */
