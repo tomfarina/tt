@@ -20,9 +20,8 @@
                 tasks: [],
                 days: defaultDays,
                 work: [],
-                taskToRemove: {},
-                dayToAddTo: '',
-                taskToUpdate: {}
+                addingTask: false,
+                dayToAddTo: ''
             }
         },
         nextId() {
@@ -41,22 +40,11 @@
                     name: inpName,
                     totalHours: inpHours
                 }
-            ]
-            this.setState({tasks: tasks});
+            ];
 
-            // Hide modal
-            $('#AddTaskModal').hide();
-
-            // clear inputs
-            $('#inpName').val('');
-            $('#inpHours').val('');
-
-            // reset states
-            this.setState({inpName: '', inpHours: ''});
+            this.setState({tasks: tasks, addingTask: false});
         },
         updateTask(taskId, inpName, inpHours){
-
-
             var tasks = this.state.tasks.map(
                 task => (task.id !== taskId) ?
                   task :
@@ -66,15 +54,21 @@
                       totalHours: inpHours
                     }
                 );
-              $('#updateTaskModal').hide();
 
-              this.setState({tasks: tasks, taskToUpdate: {}});
+              this.setState({tasks: tasks, taskToUpdate: undefined});
         },
-        addWork(dayId, inpHours) {
-            var taskId = $('#selTask option:selected').val();
-            var work = this.state.work;
-            work.push({id: this.nextWorkId(), taskId: parseInt(taskId), dayId: dayId, hours: parseInt(inpHours)});
-            this.setState({work: work})
+        addWork(taskId, dayId, inpHours) {
+            var work = [
+                  ...this.state.work,
+                  {
+                    id: this.nextWorkId(),
+                    taskId: parseInt(taskId),
+                    dayId: dayId,
+                    hours: parseInt(inpHours)
+                  }
+            ];
+
+            this.setState({work: work, dayToAddTo: undefined});
         },
         removeWork(workId){
             var works = this.state.work.filter((work) => work.id != workId);
@@ -87,89 +81,80 @@
             // remove task-related work
             var newWork = this.state.work.filter((work) => work.taskId != taskId);
 
-            $('#removeModal').hide();
-            this.setState({tasks: tasks, work: newWork})
+            this.setState({tasks: tasks, work: newWork, taskToRemove: undefined});
         },
-        showAddTaskModal(task){
-            this.setState({taskToRemove: task});
-            $('#removeModal').show();
+        //Add Task Modal handlers
+        showAddTaskModal(){
+          this.setState({addingTask: true});
         },
+        hideAddTaskModal(){
+          this.setState({addingTask: false});
+        },
+
+        //Remove Task Modal handlers
+        showRemoveTaskModal(task){
+          this.setState({taskToRemove: task});
+        },
+        hideRemoveTaskModal(){
+          this.setState({taskToRemove: undefined});
+        },
+
+        //Add Work Modal handlers
         showAddWorkModal(dayId){
           this.setState({dayToAddTo: dayId});
-          $('#addWorkModal').show();
         },
+        hideAddWorkModal(){
+          this.setState({dayToAddTo: undefined});
+        },
+
+        //Update Task Modal handlers
         showUpdateTaskModal(task){
           this.setState({taskToUpdate: task});
-          $('#updateTaskModal').show();
+        },
+        hideUpdateTaskModal(){
+          this.setState({taskToUpdate: undefined});
         },
         render() {
             return (<div>
-                <TasksContainer tasks={this.state.tasks} days={this.state.days} work={this.state.work} showModalFunction={this.showAddTaskModal} showUpdateModalFunction={this.showUpdateTaskModal} removeFunction={this.removeTask}/>
-                <DaysContainer tasks={this.state.tasks} days={this.state.days} work={this.state.work} removeFunction={this.removeWork} showModalFunction={this.showAddWorkModal}/>
+                <TasksContainer tasks={this.state.tasks} days={this.state.days} work={this.state.work} showAddModalFunction={this.showAddTaskModal} showUpdateModalFunction={this.showUpdateTaskModal} showRemoveModalFunction={this.showRemoveTaskModal} removeFunction={this.removeTask}/>
+                <DaysContainer tasks={this.state.tasks} days={this.state.days} work={this.state.work} removeFunction={this.removeWork} showAddModalFunction={this.showAddWorkModal}/>
 
-                <AddTaskModal clickFunction={this.addTask} />
-                <RemoveTaskModal tasks={this.state.tasks} days={this.state.days} work={this.state.work} task={this.state.taskToRemove} clickFunction={this.removeTask} />
-                <AddWorkModal day={this.state.dayToAddTo} tasks={this.state.tasks} clickFunction={this.addWork}/>
-                <UpdateTaskModal task={this.state.taskToUpdate} clickFunction={this.updateTask}/>
+                {this.state.addingTask ? <AddTaskModal clickFunction={this.addTask} hideFunction={this.hideAddTaskModal}/> : null }
+                {this.state.taskToRemove ? <RemoveTaskModal tasks={this.state.tasks} days={this.state.days} work={this.state.work} task={this.state.taskToRemove} removeFunction={this.removeTask} hideModalFunction={this.hideRemoveTaskModal}/> : null}
+                {this.state.dayToAddTo ? <AddWorkModal day={this.state.dayToAddTo} tasks={this.state.tasks} clickFunction={this.addWork} hideModalFunction={this.hideAddWorkModal}/> : null}
+                {this.state.taskToUpdate ? <UpdateTaskModal task={this.state.taskToUpdate} clickFunction={this.updateTask} hideFunction={this.hideUpdateTaskModal}/> : null}
             </div>)
         }
     })
 
     var AddTaskModal = React.createClass({
-        getInitialState(){
-          return {
-            inpName: '',
-            inpHours: ''
-          }
-        },
         handleChangeName: function(e) {
             this.setState({ inpName: e.target.value });
         },
         handleChangeHours: function(e) {
             this.setState({ inpHours: e.target.value });
         },
-        hideModal() {
-          $('#AddTaskModal').hide();
-          // clear inputs
-          $('#inpName').val('');
-          $('#inpHours').val('');
-        },
         render() {
-          return (<div id="AddTaskModal" style={{display:'none'}} >
-                      name: <input type="text" id="inpName" onChange={ this.handleChangeName }></input>
-                      hours: <input type="text" id="inpHours" onChange={ this.handleChangeHours }></input>
+          return (<div id="AddTaskModal">
+                      name: <input type="text" onChange={ this.handleChangeName }></input>
+                      hours: <input type="text" onChange={ this.handleChangeHours }></input>
                       <button onClick={() => this.props.clickFunction(this.state.inpName, this.state.inpHours)}>add</button>
-                      <button onClick={() => this.hideModal()}>cancel</button>
+                      <button onClick={() => this.props.hideFunction()}>cancel</button>
                   </div>)
         }
     })
 
     var UpdateTaskModal = React.createClass({
-      getInitialState(){
-        return {
-          inpName: '',
-          inpHours: ''
-        }
-      },
-      handleChangeName: function(e) {
-          this.setState({ inpName: e.target.value });
-      },
-      handleChangeHours: function(e) {
-          this.setState({ inpHours: e.target.value });
-      },
-      hideModal() {
-        $('#updateTaskModal').hide();
-        // clear inputs
-        $('#inpUpdateName').val('');
-        $('#inpUpdateHours').val('');
+      componentWillMount(){
+        this.setState({name: this.props.task.name, hours: this.props.task.hours});
       },
       render() {
 
-        return (<div id="updateTaskModal" style={{display:'none'}} >
-                    name: <input type="text" id="inpUpdateName" onChange={ this.handleChangeName }></input>
-                    hours: <input type="text" id="inpUpdateHours" onChange={ this.handleChangeHours }></input>
-                    <button onClick={() => this.props.clickFunction(this.props.task.id, this.state.inpName, this.state.inpHours)}>update</button>
-                    <button onClick={() => this.hideModal()}>cancel</button>
+        return (<div id="UpdateTaskModal" >
+                    name: <input type="text" ref="newName" defaultValue={this.state.name}></input>
+                    hours: <input type="text" ref="newHours" defaultValue={this.state.hours}></input>
+                    <button onClick={() => this.props.clickFunction(this.props.task.id, this.refs.newName.value, this.refs.newHours.value)}>update</button>
+                    <button onClick={() => this.props.hideFunction()}>cancel</button>
                 </div>)
       }
     })
@@ -179,14 +164,14 @@
           var foundWork = this.props.work.filter((work) => work.taskId == this.props.task.id);
           var showWork = foundWork.length > 0 ? {} : {display: 'none'};
 
-          return (<div id="removeModal" style={{display: 'none'}}>
+          return (<div id="RemoveTaskModal">
                     Are you sure you want to remove this task?<br/>
                     <p>task: {this.props.task.name} | hours: {this.props.task.hours}</p>
                     <div style={showWork}>
                         <p>You will also delete the following work:</p>
                         {foundWork.length > 0 ? foundWork.map(this.printWork) : null}
                     </div>
-                    <button onClick={() => this.props.clickFunction(this.props.task.id)}>yes</button><button onClick={() => this.cancelTask()}>cancel</button>
+                    <button onClick={() => this.props.removeFunction(this.props.task.id)}>yes</button><button onClick={() => this.props.hideModalFunction()}>cancel</button>
                 </div>)
         },
         printWork(work){
@@ -198,68 +183,41 @@
 
             return (<p key={work.id}>day: {dayName} | hours: {work.hours}</p>)
         },
-        cancelTask(){
-          $('#removeModal').hide();
-        },
         render() {
             return (<div>
-                  {this.printModal()}
+                      {this.printModal()}
                     </div>
             )
 
         }
     })
 
-
     var AddWorkModal = React.createClass({
-      getInitialState(){
-          return {
-              dayId: '',
-              inpHours: ''
-          }
+      handleChangeHours(e){
+          this.setState({inpHours: e.target.value});
       },
-      handleChangeHours: function(e) {
-          this.setState({ inpHours: e.target.value });
+      handleChangeTask(e){
+          this.setState({selectedTask: e.target.value});
       },
-      optionTasks(task) {
+      optionTasks(task){
           return (<option key={task.id} value={task.id}>{task.name}</option>)
       },
       addWork(){
-          this.props.clickFunction(this.props.day, this.state.inpHours);
-          this.setState({dayId: '', inpHours: ''});
-          $('#addWorkModal').hide();
-          $('#inpWorkHours').val('');
+          this.props.clickFunction(this.state.selectedTask, this.props.day, this.state.inpHours);
       },
-      hideModal(){
-          $('#addWorkModal').hide();
-          $('#inpWorkHours').val('');
-      },
-      render() {
-        return (<div id="addWorkModal" style={{display: 'none'}}>
-                  <select id='selTask'>
+      render(){
+        return (<div id="AddWorkModal">
+                  <select onChange={this.handleChangeTask}>
                     <option>Choose a task</option>
                     {this.props.tasks.map(this.optionTasks)}
                   </select><br/>
-                  <input type="text" id="inpWorkHours" onChange={ this.handleChangeHours } placeholder="Hours"></input>
-                  <button onClick={() => this.addWork()}>add</button><button onClick={() => this.hideModal()}>cancel</button>
+                  <input type="text"  onChange={ this.handleChangeHours } placeholder="Hours"></input>
+                  <button onClick={() => this.addWork()}>add</button><button onClick={() => this.props.hideModalFunction()}>cancel</button>
                 </div>)
       }
     })
 
-    var Task = React.createClass({
-        render() {
-            return (<li>{this.props.name} | total:{this.props.totalHours} | rem:{this.props.remHours}
-                <button onClick={() => this.props.showUpdateModalFunction({id: this.props.id, name: this.props.name, hours: this.props.totalHours})}>update</button>
-                <button onClick={() => this.props.showModalFunction({id: this.props.id, name: this.props.name, hours: this.props.totalHours})}>-</button></li>)
-        }
-    })
-
     var TasksContainer = React.createClass({
-        getInitialState(){
-            return {
-                taskToRemove: ''
-            }
-        },
         printTask(task) {
             var usedHours = 0;
             var foundWork = this.props.work.filter((work) => work.taskId == task.id)
@@ -272,22 +230,26 @@
                           name={task.name}
                           totalHours={task.totalHours}
                           remHours={task.totalHours - usedHours}
-                          showModalFunction={this.props.showModalFunction}
+                          showRemoveModalFunction={this.props.showRemoveModalFunction}
                           showUpdateModalFunction={this.props.showUpdateModalFunction}>
             </Task>)
         },
-
-        showModal() {
-            $('#AddTaskModal').show();
-        },
         render() {
             return (<div className='taskContainer'>
-                        <button onClick={() => this.showModal()}>+</button>
+                        <button onClick={() => this.props.showAddModalFunction()}>+</button>
                         <br/><br/><br/>
 
                         <ul>{this.props.tasks.map(this.printTask)}</ul>
                     </div>
             )
+        }
+    })
+
+    var Task = React.createClass({
+        render() {
+            return (<li>{this.props.name} | total:{this.props.totalHours} | rem:{this.props.remHours}
+                <button onClick={() => this.props.showUpdateModalFunction({id: this.props.id, name: this.props.name, hours: this.props.totalHours})}>update</button>
+                <button onClick={() => this.props.showRemoveModalFunction({id: this.props.id, name: this.props.name, hours: this.props.totalHours})}>-</button></li>)
         }
     })
 
@@ -298,7 +260,7 @@
                          name={day.name}
                          tasks={this.props.tasks}
                          work={this.props.work}
-                         showModalFunction={this.props.showModalFunction}
+                         showAddModalFunction={this.props.showAddModalFunction}
                          removeFunction={this.props.removeFunction}>
             </Day>)
         },
@@ -343,7 +305,7 @@
         },
         render() {
             return (<li id={this.state.liId} style={{display:'inline-block', padding: 10}}><h4>{this.props.name}</h4>
-                <button onClick={() => this.props.showModalFunction(this.props.id)}>add work</button>
+                <button onClick={() => this.props.showAddModalFunction(this.props.id)}>add work</button>
 
                 {this.props.tasks.map(this.groupWork)}
             </li>)
