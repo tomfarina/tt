@@ -6,7 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
     <title>Time Tracking</title>
-    <link rel="stylesheet" href="main.css" type="text/css" >
+    <link rel="stylesheet" href="ui/css/main.css" type="text/css" >
 </head>
 <body>
 <div id='app'></div>
@@ -54,19 +54,19 @@
             this.setState({tasks: tasks, addingTask: undefined});
         },
         randomColor(min, max){
-          var found = true;
-          var usedColors = this.state.tasks.map((task) => task.color);
-          var randomNum = '';
+            var found = true;
+            var usedColors = this.state.tasks.map((task) => task.color);
+            var randomNum = '';
 
-          for (var i = min; i <= max+1; i++){
-            randomNum = (min + Math.ceil(Math.random() * (max-min)));
-            if (usedColors.indexOf(randomNum) < 0){
-              break;
+            for (var i = min; i <= max+1; i++){
+              randomNum = (min + Math.ceil(Math.random() * (max-min)));
+              if (usedColors.indexOf(randomNum) < 0){
+                break;
+              }
             }
-          }
 
-          // assign num to actual color here
-          return randomNum;
+            // assign num to actual color here
+            return randomNum;
         },
         updateTask(taskId, inpName, inpHours){
             var tasks = this.state.tasks.map(
@@ -77,9 +77,9 @@
                       name: inpName,
                       totalHours: inpHours
                     }
-                );
+            );
 
-              this.setState({tasks: tasks, taskToUpdate: undefined});
+            this.setState({tasks: tasks, taskToUpdate: undefined});
         },
         addWork(taskId, dayId, inpHours, desc) {
             var work = [
@@ -110,44 +110,44 @@
         },
         //Add Task Modal handlers
         showAddTaskModal(){
-          this.setState({addingTask: true});
+            this.setState({addingTask: true});
         },
         hideAddTaskModal(){
-          this.setState({addingTask: undefined});
+            this.setState({addingTask: undefined});
         },
 
         //Remove Task Modal handlers
         showRemoveTaskModal(task){
-          this.setState({taskToRemove: task});
+            this.setState({taskToRemove: task});
         },
         hideRemoveTaskModal(){
-          this.setState({taskToRemove: undefined});
+            this.setState({taskToRemove: undefined});
         },
 
         //Add Work Modal handlers
         showAddWorkModal(dayId){
-          this.setState({dayToAddTo: dayId});
+            this.setState({dayToAddTo: dayId});
         },
         hideAddWorkModal(){
-          this.setState({dayToAddTo: undefined});
+            this.setState({dayToAddTo: undefined});
         },
 
         //Update Task Modal handlers
         showUpdateTaskModal(task){
-          this.setState({taskToUpdate: task});
+            this.setState({taskToUpdate: task});
         },
         hideUpdateTaskModal(){
-          this.setState({taskToUpdate: undefined});
+            this.setState({taskToUpdate: undefined});
         },
         render() {
             return (<div>
                 <TasksContainer tasks={this.state.tasks} days={this.state.days} work={this.state.work} showAddModalFunction={this.showAddTaskModal} showUpdateModalFunction={this.showUpdateTaskModal} showRemoveModalFunction={this.showRemoveTaskModal} removeFunction={this.removeTask}/>
                 <DaysContainer tasks={this.state.tasks} days={this.state.days} work={this.state.work} removeFunction={this.removeWork} showAddModalFunction={this.showAddWorkModal}/>
 
-                {this.state.addingTask ? <AddTaskModal clickFunction={this.addTask} hideFunction={this.hideAddTaskModal}/> : null }
+                {this.state.addingTask ? <AddTaskModal clickFunction={this.addTask} hideModalFunction={this.hideAddTaskModal}/> : null }
                 {this.state.taskToRemove ? <RemoveTaskModal tasks={this.state.tasks} days={this.state.days} work={this.state.work} task={this.state.taskToRemove} removeFunction={this.removeTask} hideModalFunction={this.hideRemoveTaskModal}/> : null}
                 {this.state.dayToAddTo ? <AddWorkModal day={this.state.dayToAddTo} tasks={this.state.tasks} clickFunction={this.addWork} hideModalFunction={this.hideAddWorkModal}/> : null}
-                {this.state.taskToUpdate ? <UpdateTaskModal task={this.state.taskToUpdate} clickFunction={this.updateTask} hideFunction={this.hideUpdateTaskModal}/> : null}
+                {this.state.taskToUpdate ? <UpdateTaskModal task={this.state.taskToUpdate} clickFunction={this.updateTask} hideModalFunction={this.hideUpdateTaskModal}/> : null}
             </div>)
         }
     })
@@ -160,36 +160,36 @@
             this.setState({ inpHours: e.target.value });
         },
         render() {
-          return (<div id="AddTaskModal">
+            return (<div id="AddTaskModal">
                       name: <input type="text" onChange={ this.handleChangeName }></input>
                       hours: <input type="text" onChange={ this.handleChangeHours }></input>
                       <button onClick={() => this.props.clickFunction(this.state.inpName, this.state.inpHours)}>add</button>
-                      <button onClick={() => this.props.hideFunction()}>cancel</button>
+                      <button onClick={() => this.props.hideModalFunction()}>cancel</button>
                   </div>)
         }
     })
 
     var UpdateTaskModal = React.createClass({
-      componentWillMount(){
-        this.setState({name: this.props.task.name, hours: this.props.task.hours});
-      },
-      render() {
+        componentWillMount(){
+            this.setState({name: this.props.task.name, hours: this.props.task.hours});
+        },
+        render() {
 
-        return (<div id="UpdateTaskModal" >
+            return (<div id="UpdateTaskModal" >
                     name: <input type="text" ref="newName" defaultValue={this.state.name}></input>
                     hours: <input type="text" ref="newHours" defaultValue={this.state.hours}></input>
                     <button onClick={() => this.props.clickFunction(this.props.task.id, this.refs.newName.value, this.refs.newHours.value)}>update</button>
-                    <button onClick={() => this.props.hideFunction()}>cancel</button>
+                    <button onClick={() => this.props.hideModalFunction()}>cancel</button>
                 </div>)
       }
     })
 
     var RemoveTaskModal = React.createClass({
         printModal(){
-          var foundWork = this.props.work.filter((work) => work.taskId == this.props.task.id);
-          var showWork = foundWork.length > 0 ? {} : {display: 'none'};
+            var foundWork = this.props.work.filter((work) => work.taskId == this.props.task.id);
+            var showWork = foundWork.length > 0 ? {} : {display: 'none'};
 
-          return (<div id="RemoveTaskModal">
+            return (<div id="RemoveTaskModal">
                     Are you sure you want to remove this task?<br/>
                     <p>task: {this.props.task.name} | hours: {this.props.task.hours}</p>
                     <div style={showWork}>
@@ -234,7 +234,7 @@
           this.props.clickFunction(this.state.selectedTask, this.props.day, this.state.inpHours, this.state.inpDesc);
       },
       render(){
-        return (<div id="AddWorkModal">
+          return (<div id="AddWorkModal">
                   <select onChange={this.handleChangeTask}>
                     <option>Choose a task</option>
                     {this.props.tasks.map(this.optionTasks)}
@@ -297,9 +297,9 @@
         },
         render() {
             return (<div id='weekList'>
-                  <ul style={{backgroundColor: 'lightGray'}}>
+                      <ul>
                         {this.props.days.map(this.printDay)}
-                    </ul>
+                      </ul>
                   </div>
             )
         }
@@ -331,7 +331,7 @@
             }
         },
         printWork(work){
-          return (<li key={work.id}><p>id: {work.id} | hours: {work.hours} | desc: {work.desc}</p>
+            return (<li key={work.id}><p>id: {work.id} | hours: {work.hours} | desc: {work.desc}</p>
               <button onClick={() => this.props.removeFunction(work.id)}>-</button></li>)
         },
         render() {

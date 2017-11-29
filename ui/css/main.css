@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Patua+One");
 html,
 body,
 h1,
@@ -13,7 +14,7 @@ ul {
 button {
   border: none;
   border-radius: 3px;
-  padding: 10px 30px; }
+  padding: 3vh 2vw; }
   button:hover {
     cursor: pointer; }
 
@@ -24,35 +25,46 @@ input {
   margin: 0 30px 0 10px; }
 
 body {
-  background: #dfe3e6;
+  background: #eef2f5;
   font-family: 'Helvetica', sans-serif;
   font-size: 18px; }
 
 #app > div {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: 15px; }
+  grid-template-rows: 15vh 60vh 25vh;
+  padding: 0 35px; }
 
 .taskContainer {
-  background: #0d404e;
-  color: #ffffff;
-  grid-column: 1/6;
+  justify-self: end;
+  align-self: stretch;
+  align-items: center;
+  color: #333333;
+  grid-column: 5/6;
   grid-row: 1;
   padding: 20px; }
   .taskContainer button {
-    background: #ff5a3c;
-    color: #ffffff;
-    margin-right: 15px; }
+    background: #567191;
+    color: #ffffff; }
     .taskContainer button:hover {
-      background: #ff4423; }
-  .taskContainer #modal {
-    display: inline-block;
-    text-align: center; }
-    .taskContainer #modal button {
-      background: #00da9d;
-      color: #ffffff; }
-      .taskContainer #modal button:hover {
-        background: #00a778; }
+      background: #4d6581; }
+
+#AddTaskModal {
+  background: #ffffff;
+  color: #333333;
+  height: 40vh;
+  width: 40vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  box-shadow: 0px 7px 29px 0px rgba(74, 72, 74, 0.15); }
+  #AddTaskModal button {
+    background: #567191;
+    color: #ffffff; }
+    #AddTaskModal button:hover {
+      background: #435871; }
 
 .taskContainer > p {
   background: #14647a;
@@ -61,13 +73,14 @@ body {
   margin-right: 15px;
   padding: 15px 0 15px 25px; }
   .taskContainer > p button {
-    background: #0d404e;
+    background: #567191;
     margin: 0 10px; }
     .taskContainer > p button:hover {
-      background: #00da9d; }
+      background: #567191; }
 
-#selTaskModal {
-  background: #0d404e;
+#AddWorkModal {
+  background: #ffffff;
+  border-radius: 3px;
   height: 40vh;
   width: 40vw;
   position: absolute;
@@ -75,7 +88,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 9999;
-  box-shadow: 0px 7px 29px 0px #4a484a; }
+  box-shadow: 0px 7px 29px 0px rgba(74, 72, 74, 0.15); }
 
 #weekList {
   grid-column: 1/6;
@@ -83,25 +96,26 @@ body {
   #weekList ul {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-gap: 15px;
-    margin: 0 15px; }
+    grid-template-rows: 60vh;
+    margin: 0; }
     #weekList ul li {
-      background: #ff5a3c;
-      border: 1px solid #ff4423;
+      background: #ffffff;
+      border: 1px solid #e6e6e6;
       border-radius: 3px;
-      color: #ffffff;
+      color: #333333;
       display: inline-block;
+      margin: 5px;
       padding: 15px;
       box-shadow: 0px 4px 2px -2px #c2c2c2; }
       #weekList ul li h4 {
         display: inline-block;
         font-weight: 100; }
       #weekList ul li button {
-        background: #ff2f09;
-        color: #ffffff;
+        background: #eef2f5;
+        color: #aec1cf;
         float: right;
         padding: 10px 20px; }
         #weekList ul li button:hover {
-          background: #ef2500; }
+          background: #dee6ec; }
 
 /*# sourceMappingURL=main.css.map */
