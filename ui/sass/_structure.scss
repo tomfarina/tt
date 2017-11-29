@@ -1,0 +1,152 @@
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    border: none;
+    border-radius: 3px;
+    padding: 3vh 2vw;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+input {
+    border: none;
+    border-radius: 3px;
+    padding: 10px 15px;
+    margin: 0 30px 0 10px;
+}
+
+body {
+    background: $grey;
+    font-family: 'Helvetica', sans-serif;
+    font-size: 18px;
+}
+
+#app > div {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 15vh 60vh 25vh;
+    padding: 0 35px;
+}
+
+.taskContainer {
+    justify-self: end;
+    align-self: stretch;
+    align-items: center;
+    color: #333333;
+    grid-column: 5/6;
+    grid-row: 1;
+    padding: 20px;
+
+    button {
+        background: $denim;
+        color: #ffffff;
+
+        &:hover {
+            background: darken($denim, 5%);
+        }
+    }
+}
+
+#AddTaskModal {
+    background: #ffffff;
+    color: #333333;
+    height: 40vh;
+    width: 40vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    box-shadow: 0px 7px 29px 0px rgba(74,72,74,.15);
+
+    button {
+        background: $denim;
+        color: #ffffff;
+
+        &:hover {
+            background: darken($denim, 10%);
+        }
+    }
+}
+
+.taskContainer > p {
+    background: lighten($navy, 10%);
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 15px;
+    padding: 15px 0 15px 25px;
+
+    button {
+        background: $denim;
+        margin: 0 10px;
+
+        &:hover {
+            background: $denim;
+        }
+    }
+}
+
+#addWorkModal {
+    background: #ffffff;
+    border-radius: 3px;
+    height: 40vh;
+    width: 40vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    box-shadow: 0px 7px 29px 0px rgba(74,72,74,.15);
+}
+
+#weekList {
+    grid-column: 1/6;
+    grid-row: 2;
+
+    ul {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: 60vh;
+        margin: 0;
+
+        li {
+            background: #ffffff;
+            border: 1px solid darken(#ffffff, 10%);
+            border-radius: 3px;
+            color: #333333;
+            display: inline-block;
+            margin: 5px;
+            padding: 15px;
+            box-shadow: 0px 4px 2px -2px rgba(194,194,194,1);
+
+            h4 {
+                display: inline-block;
+                font-weight: 100;
+            }
+            
+            button {
+                background: $grey;
+                color: darken($grey, 20%);
+                float: right;
+                padding: 10px 20px;
+
+                &:hover {
+                    background: darken($grey, 5%);
+                }
+            }
+        }
+    }
+}
