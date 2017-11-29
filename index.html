@@ -144,10 +144,10 @@
                 <TasksContainer tasks={this.state.tasks} days={this.state.days} work={this.state.work} showAddModalFunction={this.showAddTaskModal} showUpdateModalFunction={this.showUpdateTaskModal} showRemoveModalFunction={this.showRemoveTaskModal} removeFunction={this.removeTask}/>
                 <DaysContainer tasks={this.state.tasks} days={this.state.days} work={this.state.work} removeFunction={this.removeWork} showAddModalFunction={this.showAddWorkModal}/>
 
-                {this.state.addingTask ? <AddTaskModal clickFunction={this.addTask} hideFunction={this.hideAddTaskModal}/> : null }
+                {this.state.addingTask ? <AddTaskModal clickFunction={this.addTask} hideModalFunction={this.hideAddTaskModal}/> : null }
                 {this.state.taskToRemove ? <RemoveTaskModal tasks={this.state.tasks} days={this.state.days} work={this.state.work} task={this.state.taskToRemove} removeFunction={this.removeTask} hideModalFunction={this.hideRemoveTaskModal}/> : null}
                 {this.state.dayToAddTo ? <AddWorkModal day={this.state.dayToAddTo} tasks={this.state.tasks} clickFunction={this.addWork} hideModalFunction={this.hideAddWorkModal}/> : null}
-                {this.state.taskToUpdate ? <UpdateTaskModal task={this.state.taskToUpdate} clickFunction={this.updateTask} hideFunction={this.hideUpdateTaskModal}/> : null}
+                {this.state.taskToUpdate ? <UpdateTaskModal task={this.state.taskToUpdate} clickFunction={this.updateTask} hideModalFunction={this.hideUpdateTaskModal}/> : null}
             </div>)
         }
     })
@@ -164,7 +164,7 @@
                       name: <input type="text" onChange={ this.handleChangeName }></input>
                       hours: <input type="text" onChange={ this.handleChangeHours }></input>
                       <button onClick={() => this.props.clickFunction(this.state.inpName, this.state.inpHours)}>add</button>
-                      <button onClick={() => this.props.hideFunction()}>cancel</button>
+                      <button onClick={() => this.props.hideModalFunction()}>cancel</button>
                   </div>)
         }
     })
@@ -179,7 +179,7 @@
                     name: <input type="text" ref="newName" defaultValue={this.state.name}></input>
                     hours: <input type="text" ref="newHours" defaultValue={this.state.hours}></input>
                     <button onClick={() => this.props.clickFunction(this.props.task.id, this.refs.newName.value, this.refs.newHours.value)}>update</button>
-                    <button onClick={() => this.props.hideFunction()}>cancel</button>
+                    <button onClick={() => this.props.hideModalFunction()}>cancel</button>
                 </div>)
       }
     })
