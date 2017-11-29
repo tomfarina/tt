@@ -55,6 +55,8 @@
             this.setState({inpName: '', inpHours: ''});
         },
         updateTask(taskId, inpName, inpHours){
+
+
             var tasks = this.state.tasks.map(
                 task => (task.id !== taskId) ?
                   task :
@@ -145,7 +147,7 @@
     var UpdateTaskModal = React.createClass({
       getInitialState(){
         return {
-          inpName: this.props.task.name,
+          inpName: '',
           inpHours: ''
         }
       },
@@ -164,8 +166,8 @@
       render() {
 
         return (<div id="updateTaskModal" style={{display:'none'}} >
-                    name: <input type="text" id="inpUpdateName" onChange={ this.handleChangeName } value={this.state.inpName}></input>
-                    hours: <input type="text" id="inpUpdateHours" onChange={ this.handleChangeHours } value={this.props.task.hours}></input>
+                    name: <input type="text" id="inpUpdateName" onChange={ this.handleChangeName }></input>
+                    hours: <input type="text" id="inpUpdateHours" onChange={ this.handleChangeHours }></input>
                     <button onClick={() => this.props.clickFunction(this.props.task.id, this.state.inpName, this.state.inpHours)}>update</button>
                     <button onClick={() => this.hideModal()}>cancel</button>
                 </div>)
