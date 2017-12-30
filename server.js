@@ -31,13 +31,14 @@ app.get('/tasks.json', function(req, res) {
 
 app.post('/tasks.json', function(req, res) {
   fs.readFile('tasks.json', function(err, data) {
+    console.log(req.body);
     var d = req.body;
     if (d.work == undefined){
       d.work = [];
     }
 
     if (d.tasks == undefined){
-      d.tasks == [];
+      d.tasks = [];
     }
     console.log(d);
     fs.writeFile('tasks.json', JSON.stringify(d, null, 4), function(err) {

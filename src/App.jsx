@@ -16,13 +16,25 @@ var App = React.createClass({
 			work: []
 		}
 	},
-	nextId() {
-		this.uniqueId = this.uniqueId || 0
-		return this.uniqueId++
+    nextTaskId() {
+        var usedIDs = this.state.tasks.map((task) => task.id);
+        var num = 0;
+		do{
+			num = Math.floor(Math.random() * 1000)
+		}
+		while (usedIDs.indexOf(num) > -1);
+
+		return num;
 	},
 	nextWorkId() {
-		this.uniqueWorkId = this.uniqueWorkId || 0
-		return this.uniqueWorkId++
+        var usedIDs = this.state.work.map((work) => work.id);
+        var num = 0;
+        do{
+            num = Math.floor(Math.random() * 1000)
+        }
+        while (usedIDs.indexOf(num) > -1);
+
+        return num;
 	},
 	addTask(inpName, inpHours) {
 		var taskNameExists = this.state.tasks.filter((task) => task.name == inpName);
@@ -32,36 +44,37 @@ var App = React.createClass({
 			color = taskNameExists[0].color;
 		}
 		else{
-			color = this.randomColor(0,7);
+			color = this.randomColor(7);
 		}
 
 		var tasks = [
 			...this.state.tasks,
 			{
-				id: this.nextId(),
+				id: this.nextTaskId(),
 				name: inpName,
 				totalHours: inpHours,
 				color: color
 			}
 		];
 
-		this.setState({tasks: tasks, addingTask: undefined});
-		this.save();
+		this.setState({tasks: tasks, addingTask: undefined}, this.save);
 	},
-	randomColor(min, max){
-		var found = true;
+	randomColor(num){
 		var usedColors = this.state.tasks.map((task) => task.color);
-		var randomNum = '';
+        var uniqueRandoms = [];
 
-		for (var i = min; i <= max+1; i++){
-			randomNum = (min + Math.ceil(Math.random() * (max-min)));
-			if (usedColors.indexOf(randomNum) < 0){
-				break;
-			}
-		}
+        // refill the array, minus used ones
+		for (var i = 0; i < num; i++) {
+            if (usedColors.indexOf(i) < 0) {
+                uniqueRandoms.push(i);
+            }
+        }
+
+        var index = Math.floor(Math.random() * uniqueRandoms.length);
+        var val = uniqueRandoms[index];
 
 		// assign num to actual color here
-		return randomNum;
+		return val;
 	},
 	updateTask(taskId, inpName, inpHours){
 		var tasks = this.state.tasks.map(
@@ -74,8 +87,7 @@ var App = React.createClass({
 				}
 		);
 
-		this.setState({tasks: tasks, taskToUpdate: undefined});
-		this.save();
+		this.setState({tasks: tasks, taskToUpdate: undefined}, this.save);
 	},
 	addWork(taskId, dayId, inpHours, desc) {
 		var work = [
@@ -89,13 +101,11 @@ var App = React.createClass({
 			  }
 		];
 
-		this.setState({work: work, dayToAddTo: undefined});
-		this.save();
+		this.setState({work: work, dayToAddTo: undefined}, this.save);
 	},
 	removeWork(workId){
 		var works = this.state.work.filter((work) => work.id != workId);
-		this.setState({work: works})
-		this.save();
+		this.setState({work: works}, this.save);
 	},
 	removeTask(taskId){
 		// remove task from task lists
@@ -104,8 +114,7 @@ var App = React.createClass({
 		// remove task-related work
 		var newWork = this.state.work.filter((work) => work.taskId != taskId);
 
-		this.setState({tasks: tasks, work: newWork, taskToRemove: undefined});
-		this.save();
+		this.setState({tasks: tasks, work: newWork, taskToRemove: undefined}, this.save);
 	},
 	//Add Task Modal handlers
 	showAddTaskModal(){
@@ -168,6 +177,7 @@ var App = React.createClass({
 	    });
 	  },
 	  componentDidMount: function() {
+		console.log("loaded");
 	    this.loadData();
 	    //setInterval(this.loadData, this.props.pollInterval);
 	  },

@@ -66,16 +66,16 @@ body {
     #AddTaskModal button:hover {
       background: #435871; }
 
-.taskContainer > p {
+.taskContainer > li {
   background: #14647a;
   border-radius: 3px;
   display: inline-block;
   margin-right: 15px;
   padding: 15px 0 15px 25px; }
-  .taskContainer > p button {
+  .taskContainer > li button {
     background: #567191;
     margin: 0 10px; }
-    .taskContainer > p button:hover {
+    .taskContainer > li button:hover {
       background: #567191; }
 
 #AddWorkModal {

@@ -1,0 +1,131 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+
+h3{
+    padding: 0;
+    margin: 0;
+}
+
+.taskContainer{
+    border-bottom: 1px solid black;
+}
+.taskContainer > ul{
+    display: flex;
+    padding-left: 0;
+}
+.taskContainer > ul > li{
+    margin: 5px;
+    list-style:none;
+    background-size: 200% auto;
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.taskName{
+    padding: 10px;
+}
+
+.buttons{
+    display: none;
+}
+
+.weekList{
+    display: flex;
+}
+
+.day{
+    width: 225px;
+    border: 1px solid black;
+    list-style: none;
+    margin: 0px 5px;
+}
+
+.day > h4{
+    text-align: center;
+}
+
+.taskGroup{
+    height: 300px;
+    padding-left:0;
+}
+
+.task{
+    list-style: none;
+    display: block;
+    float: left;
+    width: 225px;
+    background-size: 200% auto;
+    transition: 0.5s;
+}
+
+.task:hover{
+    background-position: right center; /* change the direction of the change here */
+}
+
+.work{
+    list-style: none;
+}
+
+.workGroup{
+    padding-left: 0;
+    display: none;
+    position: absolute;
+}
+
+.color0{
+    background-color: red;
+}
+
+.color1{
+    background-image: linear-gradient(to right, #f6d365 0%, #fda085 51%, #f6d365 100%);
+}
+
+.color2{
+    background-image: linear-gradient(to right, #fbc2eb 0%, #a6c1ee 51%, #fbc2eb 100%);
+}
+
+.color3{
+    background-image: linear-gradient(to right, #84fab0 0%, #8fd3f4 51%, #84fab0 100%);
+}
+
+.color4{
+    background-image: linear-gradient(to right, #a1c4fd 0%, #c2e9fb 51%, #a1c4fd 100%);
+}
+
+.color5{
+    background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 51%, #ffecd2 100%);
+}
+
+.color6{
+    background-image: linear-gradient(to right, #a569bd  0%, #fcb69f 51%, #a569bd 100%);
+}
+
+.hours2{
+    height: 64px;
+}
+
+.hours3{
+    height: 96px;
+}
+
+.hours4{
+    height: 128px;
+}
+
+.hours5{
+    height: 160px;
+}
+
+.hours6{
+    height: 192px;
+}
+
+.hours7{
+    height: 224px;
+}
+
+.hours8{
+    height: 256px;
+}

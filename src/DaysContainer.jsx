@@ -14,8 +14,8 @@ var DaysContainer = React.createClass({
 		</Day>)
 	},
 	render() {
-		return (<div id='weekList'>
-					<ul>
+		return (<div className='weekContainer'>
+					<ul className="weekList">
 						{this.props.days.map(this.printDay)}
 					</ul>
 			  </div>

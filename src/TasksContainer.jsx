@@ -4,7 +4,7 @@ var Task = require('./Task');
 
 var TasksContainer = React.createClass({
 	printTask(task) {
-		var usedHours = 0;
+		var usedHours = parseInt(0);
 		var foundWork = this.props.work.filter((work) => work.taskId == task.id)
 
 		$.each(foundWork, function(i, item){
